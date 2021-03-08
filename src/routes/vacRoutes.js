@@ -140,8 +140,8 @@ class VacRoutes extends BaseRoute {
             method: 'DELETE',
             config: {
                 tags: ['api'],
-                description: 'remover users',
-                notes: 'remove um user por cpf',
+                description: 'remover vacinas',
+                notes: 'remove uma vacina por cpf e id',
                 validate: {
                     failAction: (request, h, err) => {
                         throw err;
