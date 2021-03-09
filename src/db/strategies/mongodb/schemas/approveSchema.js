@@ -21,7 +21,12 @@ const approveSchema = new Mongoose.Schema({
         required: true
     },
     repproved:{
-        type: Boolean
+        type: Boolean,
+        default: false
+    },
+    date: {
+        type: Date,
+        required: true
     },
     insertedAt: {
         type: Date,

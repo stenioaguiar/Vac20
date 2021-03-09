@@ -1,6 +1,7 @@
 const BaseRoute = require('./base/baseRoute')
 const Joi = require('joi')
 const Jwt = require('jsonwebtoken')
+const Validator = require('../../src/utils/validator')
 
 const USER = {
     username: '1',
@@ -14,6 +15,7 @@ class UserRoutes extends BaseRoute {
         this.businessDb = businessDb
         this.userDb = userDb
         this.visitDb = visitDb
+        this.validator = new Validator()
     }
 
     list() {
@@ -60,9 +62,29 @@ class UserRoutes extends BaseRoute {
                 },
 
             },
-            handler: (request, headers) => {
+            handler: async (request, headers) => {
                 const payload = request.payload
-                return this.businessDb.create(payload)
+                
+                if(!await this.validator.validateCnpj(payload.cnpj)){
+                    return {
+                        response: false,
+                        message: "CNPJ inválido"
+                    }
+                }
+
+                const business = await this.businessDb.create(payload)
+
+                if (business != null) {
+                    return {
+                        response: true,
+                        message: business
+                    }
+                }
+
+                return {
+                    response: false,
+                    message: "Erro ao adicionar business"
+                }
             }
         }
     }

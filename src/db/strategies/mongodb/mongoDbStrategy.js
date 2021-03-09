@@ -65,7 +65,7 @@ class MongoDB extends ICrud {
     }
 
     async readVac(item = {}) {
-        return this._collection.find(item, { cpf: 1, id: 1, description: 1, shots:1, date:1, image:1, insertedAt: 1})
+        return this._collection.find(item, { cpf: 1, id: 1, description: 1, shots:1,  image:1, date:1, insertedAt: 1})
     }
 
     async updateVac(_id, _cpf, item) {

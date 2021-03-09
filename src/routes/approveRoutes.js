@@ -81,10 +81,12 @@ class ApproveRoutes extends BaseRoute {
                     cpf: _cpf,
                     description: vac[0].description,
                     shots: vac[0].shots,
-                    image: vac[0].image
+                    image: vac[0].image,
+                    date: vac[0].date
                 }
 
                 const approved = await this.vacDb.create(vacAdd)
+                
                 if (approved != null) {
                     await this.approveDb.approveVac(_id, _cpf)
 
