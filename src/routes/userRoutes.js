@@ -3,9 +3,11 @@ const Joi = require('joi')
 const Validator = require('../../src/utils/validator')
 
 class UserRoutes extends BaseRoute {
-    constructor(userDb) {
+    constructor(userDb, businessDb, visitDb) {
         super()
         this.userDb = userDb
+        this.businessDb = businessDb
+        this.visitDb = visitDb
         this.validator = new Validator()
     }
 
@@ -223,6 +225,58 @@ class UserRoutes extends BaseRoute {
                     response: true,
                     message: "Erro ao atualizar"
                 }
+            }
+        }
+    }
+    visits() {
+        return {
+            path: '/users/visits/{cpf}',
+            method: 'GET',
+            config: {
+                tags: ['api'],
+                description: 'visualizar locais visitados',
+                notes: 'exibe locais visitados pelo usuário',
+                validate: {
+                    failAction: (request, h, err) => {
+                        throw err;
+                    },
+                    headers: Joi.object({
+                        authorization: Joi.string().required()
+                    }).unknown(),
+                    params: {
+                        cpf: Joi.string().required()
+                    }
+                },
+
+            },
+            handler: async (request, headers) => {
+                const _cpf = request.params.cpf;
+
+                const visits = await this.visitDb.readVisit({cpf: _cpf})
+
+                if(visits.length == 0) {
+                    return {
+                        response: false,
+                        message: "Não existem visitas cadastradas"
+                    }
+                }
+                
+                let places = []
+                console.log(visits)
+                for (const element of visits) {
+                    console.log("inside")
+                    console.log(element)
+                    const business = await this.businessDb.readBusiness({cnpj: element.cnpj})
+                    console.log(business)
+                    places.push({
+                        place: business[0].description,
+                        date: element.insertedAt
+                    })
+                  }
+                  return {
+                      response: true,
+                      message: places
+                  }
             }
         }
     }

@@ -71,7 +71,7 @@ async function main() {
     app.auth.default('jwt')
 
     app.route([
-        ...mapRoutes(new UserRoutes(userMongoDb), UserRoutes.methods()),
+        ...mapRoutes(new UserRoutes(userMongoDb, businessMongoDb, visitMongoDb), UserRoutes.methods()),
         ...mapRoutes(new AuthRoutes(JWT_KEY, userMongoDb), AuthRoutes.methods()),
         ...mapRoutes(new VacRoutes(userMongoDb, vacMongoDb, approveMongoDb), VacRoutes.methods()),
         ...mapRoutes(new ApproveRoutes(userMongoDb, vacMongoDb, approveMongoDb), ApproveRoutes.methods()),

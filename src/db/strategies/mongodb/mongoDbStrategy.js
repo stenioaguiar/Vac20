@@ -108,7 +108,7 @@ class MongoDB extends ICrud {
     }
 
     async readVisit(item = {}) {
-        return this._collection.find(item, {cpf: 1, cpnj: 1, insertedAt:1})
+        return this._collection.find(item, {cnpj: 1, cpf: 1, insertedAt:1})
     }
 }
 
