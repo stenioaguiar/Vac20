@@ -23,7 +23,13 @@ class IDb {
   updateVac(id, cpf, item) {
     throw new NotImplementedException();
   }
+  disapproveVac(id, cpf, item) {
+    throw new NotImplementedException();
+  }
   deleteVac(id, cpf) {
+    throw new NotImplementedException();
+  }
+  approveVac(id, cpf) {
     throw new NotImplementedException();
   }
   isConnected(id) {

@@ -3,9 +3,11 @@ const Context = require('./src/db/strategies/base/contextStrategy')
 const AuthRoutes = require('./src/routes/authRoutes')
 const UserRoutes = require('./src/routes/userRoutes')
 const VacRoutes = require('./src/routes/vacRoutes')
+const ApproveRoutes = require('./src/routes/approveRoutes')
 const MongoDB = require('./src/db/strategies/mongodb/mongoDbStrategy')
 const UserSchema = require('./src/db/strategies/mongodb/schemas/userSchema')
 const VacSchema = require('./src/db/strategies/mongodb/schemas/vacSchema')
+const ApproveSchema = require('./src/db/strategies/mongodb/schemas/approveSchema')
 
 const HapiSwagger = require('hapi-swagger')
 const Inert = require('inert')
@@ -41,6 +43,7 @@ async function main() {
     const connection = MongoDB.connect()
     const userMongoDb = new Context(new MongoDB(connection, UserSchema))
     const vacMongoDb = new Context(new MongoDB(connection, VacSchema))
+    const ApproveMongoDb = new Context(new MongoDB(connection, ApproveSchema))
 
     await app.register([
         HapiJwt,
@@ -69,7 +72,8 @@ async function main() {
     app.route([
         ...mapRoutes(new UserRoutes(userMongoDb), UserRoutes.methods()),
         ...mapRoutes(new AuthRoutes(JWT_KEY, userMongoDb), AuthRoutes.methods()),
-        ...mapRoutes(new VacRoutes(userMongoDb, vacMongoDb), VacRoutes.methods())
+        ...mapRoutes(new VacRoutes(userMongoDb, vacMongoDb, ApproveMongoDb), VacRoutes.methods()),
+        ...mapRoutes(new ApproveRoutes(userMongoDb, vacMongoDb, ApproveMongoDb), ApproveRoutes.methods())
     ])
 
     await app.start()

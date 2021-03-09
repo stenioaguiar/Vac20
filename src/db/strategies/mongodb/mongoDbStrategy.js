@@ -63,8 +63,16 @@ class MongoDB extends ICrud {
         return this._collection.updateOne({id: _id, cpf: _cpf}, { $set: item})
     }
 
+    async disaapproveVac(_id, _cpf, item) {
+        return this._collection.updateOne({id: _id, cpf: _cpf, repproved: false}, { $set: item})
+    }
+
     async deleteVac(_id, _cpf) {
         return this._collection.deleteOne({id: _id, cpf: _cpf})
+    }
+
+    async approveVac(_id,_cpf) {
+        return this._collection.deleteOne({id: _id, cpf: _cpf, repproved: false})
     }
 }
 

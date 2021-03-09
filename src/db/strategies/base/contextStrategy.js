@@ -28,7 +28,13 @@ class ContextStrategy extends IDb {
   updateVac(id, cpf, item) {
     return this._database.updateVac(id, cpf, item);
   }
+  disapproveVac(id, cpf, item) {
+    return this._database.approveVac(id, cpf, item);
+  }
   deleteVac(id, cpf) {
+    return this._database.deleteVac(id, cpf);
+  }
+  approveVac(id, cpf) {
     return this._database.deleteVac(id, cpf);
   }
 }

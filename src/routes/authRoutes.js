@@ -51,11 +51,34 @@ class AuthRoutes extends BaseRoute {
                     password !== user[0].password
                 )
                     return Boom.unauthorized()
-                    
                 return {
                     token: Jwt.sign({
                         username: username
-                    }, this.secret)
+                    }, this.secret, {
+                        expiresIn: 300})
+                }
+            }
+        }
+    }
+
+    logout() {
+        return {
+            path: '/logout',
+            method: 'POST',
+            config: {
+                auth: false,
+                tags: ['api'],
+                description: 'fazer logout',
+                notes: 'retorna o token',
+                validate: {
+                    headers: Joi.object({
+                        authorization: Joi.string().required()
+                    }).unknown()
+                }
+            },
+            handler: async (request, headers) => {
+                return {
+                    mensagem: "usuário desconectado"
                 }
             }
         }
