@@ -2,8 +2,9 @@
   "name": "vac20-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "api.js",
   "scripts": {
+    "start": "node api.js",
     "test": "mocha tests/*.test.js"
   },
   "author": "",
