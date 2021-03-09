@@ -29,8 +29,7 @@ const app = new Hapi.Server({
     port: process.env.PORT || 5000,
     routes: {
         cors: {
-            origin: ['https://vac-20.herokuapp.com',
-            'https://affectionate-poincare-710e44.netlify.app/']
+            origin: ['https://affectionate-poincare-710e44.netlify.app/']
         }
     }
 
@@ -75,10 +74,8 @@ async function main() {
         ...mapRoutes(new AuthRoutes(JWT_KEY, userMongoDb), AuthRoutes.methods()),
         ...mapRoutes(new VacRoutes(userMongoDb, vacMongoDb, ApproveMongoDb), VacRoutes.methods()),
         ...mapRoutes(new ApproveRoutes(userMongoDb, vacMongoDb, ApproveMongoDb), ApproveRoutes.methods())
-    ])
-
-    await app.start()
-    console.log('server running at', app.info.port)
+())
+port)
 
     return app;
 }
