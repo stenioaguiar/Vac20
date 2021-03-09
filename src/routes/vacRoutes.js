@@ -2,10 +2,11 @@ const BaseRoute = require('./base/baseRoute')
 const Joi = require('joi')
 
 class VacRoutes extends BaseRoute {
-    constructor(userDb, vacDb) {
+    constructor(userDb, vacDb, vacApproveDb) {
         super()
         this.userDb = userDb
         this.vacDb = vacDb
+        this.vacApproveDb = vacApproveDb
     }
 
     list() {
@@ -78,15 +79,30 @@ class VacRoutes extends BaseRoute {
                     }
                 } 
 
-                const vacines = await this.vacDb.readVac({cpf: _cpf, id: _id})
+                const vac= await this.vacDb.readVac({cpf: _cpf, id: _id})
 
-                if(vacines.length > 0){
+                if(vac.length > 0){
                     return {
                         response: false,
                         message: 'Vacina já adicionada!'
                     }
                 }
-                return this.vacDb.create(payload)
+
+                const vacApprove = await this.vacApproveDb.readVac({cpf: _cpf, id: _id, repproved: false})
+
+                if(vacApprove.length > 0){
+                    return {
+                        response: false,
+                        message: 'Vacina já adicionada está em análise!'
+                    }
+                }
+
+                payload.repproved = false
+                await this.vacApproveDb.create(payload)
+                return {
+                    response: true,
+                    message: "Vacina enviada para análise"
+                }
             }
         }
     }
@@ -120,7 +136,7 @@ class VacRoutes extends BaseRoute {
             handler: async (request, headers) => {
                 const payload = request.payload;
                 const _cpf = request.params.cpf;
-                const id = request.params.id;
+                const _id = request.params.id;
                 var user = await this.userDb.readUser({cpf: _cpf})
 
                 if(user.length == 0){
@@ -130,7 +146,7 @@ class VacRoutes extends BaseRoute {
                     }
                 }
                 
-                return this.vacDb.updateVac(id, _cpf, payload)
+                return this.vacDb.updateVac( _id, _cpf, payload)
             }
         }
     }

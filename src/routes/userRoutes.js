@@ -31,16 +31,11 @@ class UserRoutes extends BaseRoute {
             path: '/users',
             method: 'POST',
             config: {
+                auth: false,
                 tags: ['api'],
                 description: 'cadastrar users',
                 notes: 'Cadastra um user por cpf, nome e password',
                 validate: {
-                    failAction: (request, h, err) => {
-                        throw err;
-                    },
-                    headers: Joi.object({
-                        authorization: Joi.string().required()
-                    }).unknown(),
                     payload: {
                         cpf: Joi.string().max(100).required(),
                         firstName: Joi.string().max(30).required(),
