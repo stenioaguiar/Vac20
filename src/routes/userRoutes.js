@@ -1,10 +1,12 @@
 const BaseRoute = require('./base/baseRoute')
 const Joi = require('joi')
+const Validator = require('../../src/utils/validator')
 
 class UserRoutes extends BaseRoute {
-    constructor(db) {
+    constructor(userDb) {
         super()
-        this.db = db
+        this.userDb = userDb
+        this.validator = new Validator()
     }
 
     list() {
@@ -22,7 +24,7 @@ class UserRoutes extends BaseRoute {
                 }
             },
             handler: (request, headers) => {
-                return this.db.readUser()
+                return this.userDb.readUser()
             }
         }
     }
@@ -45,9 +47,29 @@ class UserRoutes extends BaseRoute {
                 },
 
             },
-            handler: (request, headers) => {
+            handler: async (request, headers) => {
                 const payload = request.payload
-                return this.db.create(payload)
+
+                if(!this.validator.validateCpf(payload.cpf)){
+                    return {
+                        response: false,
+                        message: "CPF inválido"
+                    }
+                }
+
+                const user = await this.userDb.create(payload)
+
+                if (user != null) {
+                    return {
+                        response: true,
+                        message: user
+                    }
+                }
+
+                return {
+                    response: false,
+                    message: "Erro ao adicionar user"
+                }
             }
         }
     }
@@ -82,7 +104,7 @@ class UserRoutes extends BaseRoute {
                 const payload = request.payload;
                 const cpf = request.params.cpf;
 
-                const update = await this.db.updateUser(cpf, payload)
+                const update = await this.userDb.updateUser(cpf, payload)
                 
                 if (update.nModified > 0){
                     return {
@@ -120,7 +142,7 @@ class UserRoutes extends BaseRoute {
             },
             handler: (request, headers) => {
                 const cpf = request.params.cpf;
-                return this.db.deleteUser(cpf)
+                return this.userDb.deleteUser(cpf)
             }
         }
     }
@@ -148,7 +170,7 @@ class UserRoutes extends BaseRoute {
             handler: async (request, headers) => {
                 const cpf = request.params.cpf;
                 const payload = {contaminated: true}
-                const update = await this.db.updateUser(cpf, payload)
+                const update = await this.userDb.updateUser(cpf, payload)
                 
                 if (update.nModified > 0){
                     return {
@@ -188,7 +210,7 @@ class UserRoutes extends BaseRoute {
             handler: async (request, headers) => {
                 const cpf = request.params.cpf;
                 const payload = {contaminated: false}
-                const update = await this.db.updateUser(cpf, payload)
+                const update = await this.userDb.updateUser(cpf, payload)
                 
                 if (update.nModified > 0){
                     return {
