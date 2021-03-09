@@ -29,11 +29,13 @@ const app = new Hapi.Server({
     port: process.env.PORT || 5000,
     routes: {
         cors: {
-            origin: ['https://affectionate-poincare-710e44.netlify.app/']
+            origin: ['https://vac-20.herokuapp.com']
         }
     }
 
 })
+
+app.use(cors({ origin: 'https://vac-20.herokuapp.com' }))
 
 function mapRoutes(instance, methods) {
     return methods.map(method => instance[method]())
@@ -57,9 +59,9 @@ async function main() {
     
     app.auth.strategy('jwt', 'jwt', {
         key: JWT_KEY,
-        // options: {
-        //     expiresIn: 30
-        // },
+        options: {
+            expiresIn: 5
+        },
         validate: (dado, request) => {
             return {
                 isValid: true
@@ -74,9 +76,9 @@ async function main() {
         ...mapRoutes(new AuthRoutes(JWT_KEY, userMongoDb), AuthRoutes.methods()),
         ...mapRoutes(new VacRoutes(userMongoDb, vacMongoDb, ApproveMongoDb), VacRoutes.methods()),
         ...mapRoutes(new ApproveRoutes(userMongoDb, vacMongoDb, ApproveMongoDb), ApproveRoutes.methods())
-())
-port)
-
+    ])
+    await app.start()
+    console.log('server running at', app.info.port)
     return app;
 }
 module.exports = main()
