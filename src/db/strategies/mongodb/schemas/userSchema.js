@@ -25,6 +25,14 @@ const userSchema = new Mongoose.Schema({
     image: {
         type: String
     },
+    vacStatus: {
+        type: Boolean,
+        default: false
+    },
+    contaminated: {
+        type: Boolean,
+        default: false
+    },
     insertedAt: {
         type: Date,
         default: new Date()

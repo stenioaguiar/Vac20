@@ -20,6 +20,10 @@ const vacSchema = new Mongoose.Schema({
         type: String,
         required: true
     },
+    date: {
+        type: Date,
+        required: true
+    },
     insertedAt: {
         type: Date,
         default: new Date()

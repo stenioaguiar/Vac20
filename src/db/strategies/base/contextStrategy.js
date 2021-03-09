@@ -37,6 +37,18 @@ class ContextStrategy extends IDb {
   approveVac(id, cpf) {
     return this._database.deleteVac(id, cpf);
   }
+  readBusiness(item) {
+    return this._database.readBusiness(item);
+  }
+  updateBusiness(cnpj, item) {
+    return this._database.updateBusiness(cnpj, item);
+  }
+  deleteBusiness(cnpj) {
+    return this._database.deleteBusiness(cnpj);
+  }
+  readVisit(item) {
+    return this._database.readVisit(item);
+  }
 }
 
 module.exports = ContextStrategy;

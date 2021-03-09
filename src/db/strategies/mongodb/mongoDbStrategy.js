@@ -44,7 +44,16 @@ class MongoDB extends ICrud {
     }
 
     async readUser(item = {}) {
-        return this._collection.find(item, { cpf: 1, firstName: 1, lastName: 1, dob:1, password:1, insertedAt: 1, image: 1})
+        return this._collection.find(item, {
+             cpf: 1, 
+             firstName: 1, 
+             lastName: 1, 
+             dob:1, 
+             password:1, 
+             insertedAt: 1, 
+             image: 1, 
+             vacStatus: 1, 
+             contaminated: 1})
     }
 
     async updateUser(_cpf, item) {
@@ -56,14 +65,14 @@ class MongoDB extends ICrud {
     }
 
     async readVac(item = {}) {
-        return this._collection.find(item, { cpf: 1, id: 1, description: 1, shots:1, image:1, insertedAt: 1})
+        return this._collection.find(item, { cpf: 1, id: 1, description: 1, shots:1, date:1, image:1, insertedAt: 1})
     }
 
     async updateVac(_id, _cpf, item) {
         return this._collection.updateOne({id: _id, cpf: _cpf}, { $set: item})
     }
 
-    async disaapproveVac(_id, _cpf, item) {
+    async disapproveVac(_id, _cpf, item) {
         return this._collection.updateOne({id: _id, cpf: _cpf, repproved: false}, { $set: item})
     }
 
@@ -73,6 +82,33 @@ class MongoDB extends ICrud {
 
     async approveVac(_id,_cpf) {
         return this._collection.deleteOne({id: _id, cpf: _cpf, repproved: false})
+    }
+
+    async readBusiness(item = {}) {
+        return this._collection.find(item, {
+             cnpj: 1 , 
+             password: 1, 
+             description: 1, 
+             addressStreet: 1, 
+             addressNumber: 1, 
+             addressComplement: 1,
+             addressCity: 1,
+             addressState: 1,
+             addressCountry:1,
+             addressCode: 1,
+             insertedAt: 1})
+    }
+
+    async updateBusiness(_cnpj, item) {
+        return this._collection.updateOne({cnpj: _cnpj}, { $set: item})
+    }
+
+    async deleteBusiness(_cnpj) {
+        return this._collection.deleteOne({cnpj: _cnpj})
+    }
+
+    async readVisit(item = {}) {
+        return this._collection.find(item, {cpf: 1, cpnj: 1, insertedAt:1})
     }
 }
 

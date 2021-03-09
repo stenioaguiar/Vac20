@@ -78,10 +78,23 @@ class UserRoutes extends BaseRoute {
                 },
 
             },
-            handler: (request, headers) => {
+            handler: async (request, headers) => {
                 const payload = request.payload;
                 const cpf = request.params.cpf;
-                return this.db.updateUser(cpf, payload)
+
+                const update = await this.db.updateUser(cpf, payload)
+                
+                if (update.nModified > 0){
+                    return {
+                        response: true,
+                        message: "User Atualizado"
+                    }
+                }
+
+                return {
+                    response: true,
+                    message: "Erro ao atualizar"
+                }
             }
         }
     }
@@ -111,7 +124,86 @@ class UserRoutes extends BaseRoute {
             }
         }
     }
+    notify() {
+        return {
+            path: '/users/notify/{cpf}',
+            method: 'PATCH',
+            config: {
+                tags: ['api'],
+                description: 'notificar contaminação',
+                notes: 'atualiza usuario para contaminado',
+                validate: {
+                    failAction: (request, h, err) => {
+                        throw err;
+                    },
+                    headers: Joi.object({
+                        authorization: Joi.string().required()
+                    }).unknown(),
+                    params: {
+                        cpf: Joi.string().required()
+                    }
+                },
 
+            },
+            handler: async (request, headers) => {
+                const cpf = request.params.cpf;
+                const payload = {contaminated: true}
+                const update = await this.db.updateUser(cpf, payload)
+                
+                if (update.nModified > 0){
+                    return {
+                        response: true,
+                        message: "User Atualizado"
+                    }
+                }
+
+                return {
+                    response: true,
+                    message: "Erro ao atualizar"
+                }
+            }
+        }
+    }
+    cure() {
+        return {
+            path: '/users/recovery/{cpf}',
+            method: 'PATCH',
+            config: {
+                tags: ['api'],
+                description: 'notificar recuperação',
+                notes: 'atualiza usuario para não contaminado',
+                validate: {
+                    failAction: (request, h, err) => {
+                        throw err;
+                    },
+                    headers: Joi.object({
+                        authorization: Joi.string().required()
+                    }).unknown(),
+                    params: {
+                        cpf: Joi.string().required()
+                    }
+                },
+
+            },
+            handler: async (request, headers) => {
+                const cpf = request.params.cpf;
+                const payload = {contaminated: false}
+                const update = await this.db.updateUser(cpf, payload)
+                
+                if (update.nModified > 0){
+                    return {
+                        response: true,
+                        message: "User Atualizado"
+                    }
+                }
+
+                return {
+                    response: true,
+                    message: "Erro ao atualizar"
+                }
+            }
+        }
+    }
 }
 
 module.exports = UserRoutes
