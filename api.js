@@ -28,14 +28,10 @@ const swaggerConfig = {
 const app = new Hapi.Server({
     port: process.env.PORT || 5000,
     routes: {
-        cors: {
-            origin: ['https://vac-20.herokuapp.com']
-        }
+        cors: true
     }
 
 })
-
-app.use(cors({ origin: 'https://vac-20.herokuapp.com' }))
 
 function mapRoutes(instance, methods) {
     return methods.map(method => instance[method]())
@@ -77,6 +73,7 @@ async function main() {
         ...mapRoutes(new VacRoutes(userMongoDb, vacMongoDb, ApproveMongoDb), VacRoutes.methods()),
         ...mapRoutes(new ApproveRoutes(userMongoDb, vacMongoDb, ApproveMongoDb), ApproveRoutes.methods())
     ])
+
     await app.start()
     console.log('server running at', app.info.port)
     return app;
