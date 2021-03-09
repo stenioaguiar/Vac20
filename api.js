@@ -29,7 +29,8 @@ const app = new Hapi.Server({
     port: process.env.PORT || 5000,
     routes: {
         cors: {
-            origin: ['https://vac-20.herokuapp.com']
+            origin: ['https://vac-20.herokuapp.com',
+            'https://affectionate-poincare-710e44.netlify.app/']
         }
     }
 
