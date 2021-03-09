@@ -32,7 +32,19 @@ class IDb {
   approveVac(id, cpf) {
     throw new NotImplementedException();
   }
+  readBusiness(item) {
+    throw new NotImplementedException();
+  }
+  updateBusiness(cpf, item) {
+    throw new NotImplementedException();
+  }
+  deleteBusiness(cpf) {
+    throw new NotImplementedException();
+  }
   isConnected(id) {
+    throw new NotImplementedException();
+  }
+  readVisit(item) {
     throw new NotImplementedException();
   }
 }

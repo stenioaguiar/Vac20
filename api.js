@@ -4,10 +4,13 @@ const AuthRoutes = require('./src/routes/authRoutes')
 const UserRoutes = require('./src/routes/userRoutes')
 const VacRoutes = require('./src/routes/vacRoutes')
 const ApproveRoutes = require('./src/routes/approveRoutes')
+const BusinessRoutes = require('./src/routes/businessRoutes')
 const MongoDB = require('./src/db/strategies/mongodb/mongoDbStrategy')
 const UserSchema = require('./src/db/strategies/mongodb/schemas/userSchema')
 const VacSchema = require('./src/db/strategies/mongodb/schemas/vacSchema')
 const ApproveSchema = require('./src/db/strategies/mongodb/schemas/approveSchema')
+const BusinessSchema = require('./src/db/strategies/mongodb/schemas/businessSchema')
+const VisitSchema = require('./src/db/strategies/mongodb/schemas/visitSchema')
 
 const HapiSwagger = require('hapi-swagger')
 const Inert = require('inert')
@@ -22,7 +25,6 @@ const swaggerConfig = {
         version: 'v1.0'
     },
     lang: 'pt'
-
 }
 
 const app = new Hapi.Server({
@@ -30,7 +32,6 @@ const app = new Hapi.Server({
     routes: {
         cors: true
     }
-
 })
 
 function mapRoutes(instance, methods) {
@@ -41,7 +42,9 @@ async function main() {
     const connection = MongoDB.connect()
     const userMongoDb = new Context(new MongoDB(connection, UserSchema))
     const vacMongoDb = new Context(new MongoDB(connection, VacSchema))
-    const ApproveMongoDb = new Context(new MongoDB(connection, ApproveSchema))
+    const approveMongoDb = new Context(new MongoDB(connection, ApproveSchema))
+    const businessMongoDb = new Context(new MongoDB(connection, BusinessSchema))
+    const visitMongoDb = new Context(new MongoDB(connection, VisitSchema))
 
     await app.register([
         HapiJwt,
@@ -70,12 +73,14 @@ async function main() {
     app.route([
         ...mapRoutes(new UserRoutes(userMongoDb), UserRoutes.methods()),
         ...mapRoutes(new AuthRoutes(JWT_KEY, userMongoDb), AuthRoutes.methods()),
-        ...mapRoutes(new VacRoutes(userMongoDb, vacMongoDb, ApproveMongoDb), VacRoutes.methods()),
-        ...mapRoutes(new ApproveRoutes(userMongoDb, vacMongoDb, ApproveMongoDb), ApproveRoutes.methods())
+        ...mapRoutes(new VacRoutes(userMongoDb, vacMongoDb, approveMongoDb), VacRoutes.methods()),
+        ...mapRoutes(new ApproveRoutes(userMongoDb, vacMongoDb, approveMongoDb), ApproveRoutes.methods()),
+        ...mapRoutes(new BusinessRoutes(JWT_KEY, businessMongoDb, userMongoDb, visitMongoDb), BusinessRoutes.methods())
     ])
 
     await app.start()
     console.log('server running at', app.info.port)
     return app;
 }
+
 module.exports = main()

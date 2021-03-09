@@ -87,6 +87,11 @@ class ApproveRoutes extends BaseRoute {
                 const approved = await this.vacDb.create(vacAdd)
                 if (approved != null) {
                     await this.approveDb.approveVac(_id, _cpf)
+
+                    if (approved.id == "cor1") {
+                        await this.userDb.updateUser(_cpf, {vacStatus : true})
+                    }
+
                     return {
                         response: true,
                         message: "vacina aprovada"

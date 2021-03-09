@@ -61,6 +61,7 @@ class VacRoutes extends BaseRoute {
                         id: Joi.string().required(),
                         description: Joi.string().required(),
                         shots: Joi.number().required(),
+                        date: Joi.date().required(),
                         image: Joi.string()
                     }
                 },
@@ -128,7 +129,8 @@ class VacRoutes extends BaseRoute {
                     payload: {
                         description: Joi.string(),
                         shots: Joi.number(),
-                        image: Joi.string()
+                        image: Joi.string(),
+                        date: Joi.date()
                     }
                 },
 
