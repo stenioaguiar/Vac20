@@ -22,5 +22,8 @@
     "mongoose": "^5.3.11",
     "sequelize": "^4.38.0",
     "vision": "^5.4.3"
+  },
+  "engines": {
+    "node": "12.14.1"
   }
 }

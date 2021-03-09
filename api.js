@@ -24,7 +24,13 @@ const swaggerConfig = {
 }
 
 const app = new Hapi.Server({
-    port: 5000
+    port: process.env.PORT || 5000,
+    routes: {
+        cors: {
+            origin: ['https://vac-20.herokuapp.com']
+        }
+    }
+
 })
 
 function mapRoutes(instance, methods) {
