@@ -88,6 +88,7 @@ class MongoDB extends ICrud {
         return this._collection.find(item, {
              cnpj: 1 , 
              password: 1, 
+             name: 1,
              description: 1, 
              addressStreet: 1, 
              addressNumber: 1, 

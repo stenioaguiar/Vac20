@@ -262,14 +262,10 @@ class UserRoutes extends BaseRoute {
                 }
                 
                 let places = []
-                console.log(visits)
                 for (const element of visits) {
-                    console.log("inside")
-                    console.log(element)
                     const business = await this.businessDb.readBusiness({cnpj: element.cnpj})
-                    console.log(business)
                     places.push({
-                        place: business[0].description,
+                        place: business[0].name,
                         date: element.insertedAt
                     })
                   }
