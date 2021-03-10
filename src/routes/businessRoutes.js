@@ -50,6 +50,7 @@ class UserRoutes extends BaseRoute {
                     payload: {
                         cnpj: Joi.string().required(),
                         password: Joi.string().required(),
+                        name: Joi.string().required(),
                         description: Joi.string(),
                         addressStreet: Joi.string().required(),
                         addressNumber: Joi.number().required(),
@@ -108,6 +109,7 @@ class UserRoutes extends BaseRoute {
                     },
                     payload: {
                         password: Joi.string(),
+                        name: Joi.string(),
                         description: Joi.string(),
                         addressStreet: Joi.string(),
                         addressNumber: Joi.number(),
