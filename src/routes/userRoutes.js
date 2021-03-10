@@ -171,7 +171,7 @@ class UserRoutes extends BaseRoute {
             },
             handler: async (request, headers) => {
                 const cpf = request.params.cpf;
-                const payload = {contaminated: true}
+                const payload = {contaminated: true, contaminationDate: new Date()}
                 const update = await this.userDb.updateUser(cpf, payload)
                 
                 if (update.nModified > 0){

@@ -376,7 +376,14 @@ class UserRoutes extends BaseRoute {
 
                 for (const element of visit) {
                     const visitor = await this.userDb.readUser({cpf: element.cpf})
-                    if(visitor[0].contaminated == true){
+                    let _contaminated = false
+                    const diffDays = parseInt((element.insertedAt - visitor[0].contaminationDate) / (1000 * 60 * 60 * 24))
+
+                    if(Math.abs(diffDays) <=15){
+                        _contaminated = true
+                    }
+
+                    if(visitor[0].contaminated && _contaminated){
                         contaminatedVisitors = contaminatedVisitors + 1
                     }
                   }
@@ -390,8 +397,7 @@ class UserRoutes extends BaseRoute {
                 }
             }
         }
-    }   
-
+    }
 }
 
 module.exports = UserRoutes
