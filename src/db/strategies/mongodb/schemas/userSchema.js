@@ -33,6 +33,9 @@ const userSchema = new Mongoose.Schema({
         type: Boolean,
         default: false
     },
+    contaminationDate: {
+        type: Date
+    },
     insertedAt: {
         type: Date,
         default: new Date()

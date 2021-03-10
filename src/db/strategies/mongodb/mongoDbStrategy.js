@@ -53,7 +53,8 @@ class MongoDB extends ICrud {
              insertedAt: 1, 
              image: 1, 
              vacStatus: 1, 
-             contaminated: 1})
+             contaminated: 1,
+             contaminationDate: 1})
     }
 
     async updateUser(_cpf, item) {
