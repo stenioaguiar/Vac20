@@ -25,7 +25,7 @@ const businessSchema = new Mongoose.Schema({
         required: true
     },
     addressComplement:{
-        type: Number
+        type: String
     },
     addressCity:{
         type: String,
