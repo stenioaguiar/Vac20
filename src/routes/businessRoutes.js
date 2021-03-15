@@ -59,8 +59,8 @@ class UserRoutes extends BaseRoute {
                         addressState: Joi.string().required(),
                         addressCountry: Joi.string().required(),
                         addressCode: Joi.string().required(),
-                        addressLatitude: Joi.string().required(),
-                        addressLongitude: Joi.string().required()
+                        addressLatitude: Joi.string(),
+                        addressLongitude: Joi.string()
                     }
                 },
             },
