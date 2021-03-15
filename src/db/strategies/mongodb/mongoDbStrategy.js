@@ -98,6 +98,8 @@ class MongoDB extends ICrud {
              addressState: 1,
              addressCountry:1,
              addressCode: 1,
+             addressLatitude: 1,
+             addressLongitude: 1,
              insertedAt: 1})
     }
 

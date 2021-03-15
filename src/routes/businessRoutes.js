@@ -58,10 +58,11 @@ class UserRoutes extends BaseRoute {
                         addressCity: Joi.string().required(),
                         addressState: Joi.string().required(),
                         addressCountry: Joi.string().required(),
-                        addressCode: Joi.string().required()
+                        addressCode: Joi.string().required(),
+                        addressLatitude: Joi.string().required(),
+                        addressLongitude: Joi.string().required()
                     }
                 },
-
             },
             handler: async (request, headers) => {
                 const payload = request.payload
@@ -117,10 +118,11 @@ class UserRoutes extends BaseRoute {
                         addressCity: Joi.string(),
                         addressState: Joi.string(),
                         addressCountry: Joi.string(),
-                        addressCode: Joi.string()
+                        addressCode: Joi.string(),
+                        addressLatitude: Joi.string().required(),
+                        addressLongitude: Joi.string().required()
                     }
                 },
-
             },
             handler: async (request, headers) => {
                 const payload = request.payload;
@@ -300,7 +302,6 @@ class UserRoutes extends BaseRoute {
                         cpf: Joi.string().required(),
                     }
                 },
-
             },
             handler: async (request, headers) => {
                 const payload = request.payload
