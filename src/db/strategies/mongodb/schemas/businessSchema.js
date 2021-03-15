@@ -36,10 +36,16 @@ const businessSchema = new Mongoose.Schema({
         required: true
     },
     addressCountry:{
+        type: String
+    },
+    addressCode:{
         type: String,
         required: true
     },
-    addressCode:{
+    addressLatitude:{
+        type: String
+    },
+    addressLongitude:{
         type: String,
         required: true
     },
