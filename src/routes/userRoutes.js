@@ -1,6 +1,7 @@
 const BaseRoute = require('./base/baseRoute')
 const Joi = require('joi')
 const Validator = require('../../src/utils/validator')
+const Boom = require('boom')
 
 class UserRoutes extends BaseRoute {
     constructor(userDb, businessDb, visitDb) {
@@ -40,6 +41,14 @@ class UserRoutes extends BaseRoute {
                 description: 'cadastrar users',
                 notes: 'Cadastra um user por cpf, nome e password',
                 validate: {
+                    failAction:
+                        async (request, h, err) => {
+                            const error = Boom.badRequest('Payload Incorreto')
+                            error.output.statusCode = 200   // Assign a custom error code
+                            error.reformat()
+                            error.output.payload.response = false 
+                            throw error;
+                        },
                     payload: {
                         cpf: Joi.string().max(100).required(),
                         firstName: Joi.string().max(30).required(),

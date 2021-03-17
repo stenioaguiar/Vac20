@@ -77,7 +77,7 @@ async function main() {
         ...mapRoutes(new ApproveRoutes(userMongoDb, vacMongoDb, approveMongoDb), ApproveRoutes.methods()),
         ...mapRoutes(new BusinessRoutes(JWT_KEY, businessMongoDb, userMongoDb, visitMongoDb), BusinessRoutes.methods())
     ])
-
+      
     await app.start()
     console.log('server running at', app.info.port)
     return app;

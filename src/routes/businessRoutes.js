@@ -2,6 +2,7 @@ const BaseRoute = require('./base/baseRoute')
 const Joi = require('joi')
 const Jwt = require('jsonwebtoken')
 const Validator = require('../../src/utils/validator')
+const Boom = require('boom')
 
 const USER = {
     username: '1',
@@ -47,6 +48,14 @@ class UserRoutes extends BaseRoute {
                 description: 'cadastrar business',
                 notes: 'Cadastra um business por cnpj, endereço e password',
                 validate: {
+                    failAction:
+                        async (request, h, err) => {
+                            const error = Boom.badRequest('Payload Incorreto')
+                            error.output.statusCode = 200   // Assign a custom error code
+                            error.reformat()
+                            error.output.payload.response = false 
+                            throw error;
+                        },
                     payload: {
                         cnpj: Joi.string().required(),
                         password: Joi.string().required(),
