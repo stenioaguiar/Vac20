@@ -1,5 +1,6 @@
 const BaseRoute = require('./base/baseRoute')
 const Joi = require('joi')
+const Boom = require('boom')
 
 class VacRoutes extends BaseRoute {
     constructor(userDb, vacDb, vacApproveDb) {
@@ -50,9 +51,14 @@ class VacRoutes extends BaseRoute {
                 description: 'cadastrar vacinas',
                 notes: 'Cadastra uma vacina vinculada a um usuário',
                 validate: {
-                    failAction: (request, h, err) => {
-                        throw err;
-                    },
+                    failAction:
+                        async (request, h, err) => {
+                            const error = Boom.badRequest('Payload Incorreto')
+                            error.output.statusCode = 200   // Assign a custom error code
+                            error.reformat()
+                            error.output.payload.response = false 
+                            throw error;
+                        },
                     headers: Joi.object({
                         authorization: Joi.string().required()
                     }).unknown(),
